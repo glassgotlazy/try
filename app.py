@@ -3,7 +3,7 @@ import pandas as pd
 import datetime
 import openai
 
-# Get your OpenAI API key from .streamlit/secrets.toml or another method
+# Set OpenAI API key from secrets
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 st.sidebar.title("Elder Health Profile")
@@ -24,7 +24,8 @@ with tab1:
     bp = st.text_input("Blood Pressure (e.g. 120/80)")
     pulse = st.number_input("Pulse Rate", min_value=40, max_value=160)
     sugar = st.number_input("Sugar Level (mg/dL)", min_value=60, max_value=350)
-    weight = st.number_input("Weight (kg)", min_value=35, max_value=200, step=0.1)
+    # Corrected line: min_value and max_value are floats now
+    weight = st.number_input("Weight (kg)", min_value=35.0, max_value=200.0, step=0.1)
     notes = st.text_area("Symptoms/Notes")
     if st.button("Save Vitals"):
         if "vitals" not in st.session_state:
