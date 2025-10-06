@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 import datetime
-import openai
+from openai import OpenAI
 
-# Set OpenAI API key from secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI()
 
 st.sidebar.title("Elder Health Profile")
 name = st.sidebar.text_input("Name")
@@ -24,7 +23,6 @@ with tab1:
     bp = st.text_input("Blood Pressure (e.g. 120/80)")
     pulse = st.number_input("Pulse Rate", min_value=40, max_value=160)
     sugar = st.number_input("Sugar Level (mg/dL)", min_value=60, max_value=350)
-    # Corrected line: min_value and max_value are floats now
     weight = st.number_input("Weight (kg)", min_value=35.0, max_value=200.0, step=0.1)
     notes = st.text_area("Symptoms/Notes")
     if st.button("Save Vitals"):
@@ -62,7 +60,7 @@ with tab4:
     user_query = st.text_area("Type your health question")
     if st.button("Ask ChatGPT"):
         if user_query:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful health assistant for elders."},
@@ -77,3 +75,4 @@ with tab4:
 
 st.markdown("---")
 st.caption("Demo: Elder Health Management with Streamlit & ChatGPT-3.5")
+
